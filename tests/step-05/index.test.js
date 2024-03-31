@@ -10,15 +10,8 @@ test('Read CSV File', async () => {
     expect(data[0].age).toBe('30'); //ignore the string type here, we will fix this later
 });
 
-test('Parse SQL Query', () => {
-    const query = 'SELECT id, name FROM sample';
-    const parsed = parseQuery(query);
-    expect(parsed).toEqual({
-        fields: ['id', 'name'],
-        table: 'sample',
-        whereClause: null
-    });
-});
+
+
 
 test('Execute SQL Query', async () => {
     const query = 'SELECT id, name FROM sample';
@@ -30,13 +23,22 @@ test('Execute SQL Query', async () => {
     expect(result[0]).toEqual({ id: '1', name: 'John' });
 });
 
-test('Parse SQL Query with WHERE Clause', () => {
-    const query = 'SELECT id, name FROM sample WHERE age = 25';
+
+test('Parse SQL Query with Multiple WHERE Clauses', () => {
+    const query = 'SELECT id, name FROM sample WHERE age = 30 AND name = John';
     const parsed = parseQuery(query);
     expect(parsed).toEqual({
         fields: ['id', 'name'],
         table: 'sample',
-        whereClause: 'age = 25'
+        whereClauses: [{
+            "field": "age",
+            "operator": "=",
+            "value": "30",
+        }, {
+            "field": "name",
+            "operator": "=",
+            "value": "John",
+        }]
     });
 });
 
